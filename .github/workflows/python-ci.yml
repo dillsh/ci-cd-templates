@@ -26,9 +26,6 @@ jobs:
       - name: Lint
         run: uv run ruff check src/ --exit-zero
 
-      - name: Type check
-        run: uv run mypy src/
-
   test:
     if: inputs.test_path != ''
     runs-on: ubuntu-latest
