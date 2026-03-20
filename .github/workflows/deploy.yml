@@ -1,0 +1,33 @@
+name: Deploy (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      service_name:
+        description: "Docker Compose service name to rebuild and restart"
+        type: string
+        required: true
+    secrets:
+      HETZNER_HOST:
+        required: true
+      HETZNER_USER:
+        required: true
+      HETZNER_SSH_KEY:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Hetzner
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HETZNER_HOST }}
+          username: ${{ secrets.HETZNER_USER }}
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          script: |
+            set -e
+            cd ~/apps/${{ inputs.service_name }}
+            git pull
+            cd ~/apps/cve-project
+            docker compose up -d --build ${{ inputs.service_name }}
