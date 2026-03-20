@@ -7,6 +7,11 @@ on:
         description: "Docker Compose service name to rebuild and restart"
         type: string
         required: true
+      version:
+        description: "Version tag to pass as APP_VERSION build arg (e.g. v1.2.3)"
+        type: string
+        required: false
+        default: "dev"
     secrets:
       HETZNER_HOST:
         required: true
@@ -30,4 +35,4 @@ jobs:
             cd ~/apps/${{ inputs.service_name }}
             git pull
             cd ~/apps/cve-project
-            docker compose up -d --build ${{ inputs.service_name }}
+            VERSION=${{ inputs.version }} docker compose up -d --build ${{ inputs.service_name }}
