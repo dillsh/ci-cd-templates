@@ -38,4 +38,4 @@ jobs:
             cd ~/apps/${{ inputs.service_name }}
             git pull
             cd ~/apps/cve-project
-            VERSION=${{ inputs.version }} docker compose up -d --build ${{ inputs.service_name }}
+            APP_VERSION=${{ inputs.version }} docker compose up -d --build ${{ inputs.service_name }}
